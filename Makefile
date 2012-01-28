@@ -15,5 +15,9 @@ default:
 	# cp build/*.html build/*.txt ~/src/illuminatedcomputing/site/tools/manview/
 	# cp *.pj ~/src/illuminatedcomputing/site/tools/man/
 
+
+readme:
+	markdown README.md > README.html
+
 clean:
-	rm -rf build
+	rm -rf build README.html
