@@ -1,0 +1,8 @@
+$ irb
+> require 'aws/s3'
+> AWS::S3::Base.establish_connection!(
+    :access_key_id     => 'abc',
+    :secret_access_key => '123'
+  )
+> b = AWS::S3::Bucket.find('electnext')
+

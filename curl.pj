@@ -1,0 +1,3 @@
+Use -O (oh, not zero) to write output to a file named after the file in the URL:
+
+  curl -O http://example.com/something

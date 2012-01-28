@@ -1,0 +1,12 @@
+dpkg does the installing; apt-get manages depencendies and pulls things down from repositories.
+
+
+To list installed packages:
+  dpkg --list [pattern]     # pattern is something like 'wine*'
+
+To report the status of a package:
+  dpkg --status <package-name>
+
+To list files currently installed by a package:
+  dpkg --listfiles <package-name>
+

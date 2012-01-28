@@ -1,0 +1,23 @@
+To see an old version of something:
+    git show HEAD~1:path/to/file
+Here ~1 means "1 revision before HEAD"
+
+
+To find the commit in which you removed an object:
+    git log -n 1 -- <filename>
+To get it back:
+    git checkout <commit>^ <filename>
+
+
+To see everything on a remote repository:
+    git remote show origin
+
+To enable access to new remote branches, you might have to do this:
+    git fetch origin
+
+To create a local branch based on a remote branch:
+    git checkout -b <branch> origin/<branch>
+http://stackoverflow.com/questions/1783405/git-checkout-remote-branch
+
+To erase the last commit without altering your index or checkout:
+    git reset --soft HEAD~1
