@@ -10,3 +10,6 @@ To report the status of a package:
 To list files currently installed by a package:
   dpkg --listfiles <package-name>
 
+To look for new packages:
+  apt-cache search <search-string>
+
