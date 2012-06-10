@@ -3,6 +3,10 @@
 
 default: html toc
 
+install:
+	mkdir -p "$$HOME/man/manpj"
+	tar cf - *.pj | (cd "$$HOME/man/manpj" && tar xvf -)
+
 html:
 	mkdir -p build
 	for f in *.pj; do \
