@@ -13,3 +13,6 @@ To list files currently installed by a package:
 To look for new packages:
   apt-cache search <search-string>
 
+To find the package containing a given file:
+  apt-file search <filename>
+
