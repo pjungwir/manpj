@@ -21,3 +21,10 @@ http://stackoverflow.com/questions/1783405/git-checkout-remote-branch
 
 To erase the last commit without altering your index or checkout:
     git reset --soft HEAD~1
+
+To reset your checkout to origin:
+    git fetch origin && git reset --hard origin/master
+
+To set a local branch to track a remote branch:
+    git branch --set-upstream foo origin/foo
+
