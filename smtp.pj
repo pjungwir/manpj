@@ -1,0 +1,7 @@
+HELO
+MAIL FROM:foo@here.com
+RCPT TO:bar@there.com
+DATA
+greetings!
+\.
+
