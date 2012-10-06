@@ -1,0 +1,8 @@
+
+regexp_matches(string, pattern)
+-------------------------------
+
+Unforunately this returns a setof text[] with *all* the matches found. If you just want one, you can do this:
+
+    SELECT (regexp_matches(col, 'foo(bar)'))[1] FROM baz
+
