@@ -6,3 +6,46 @@ Unforunately this returns a setof text[] with *all* the matches found. If you ju
 
     SELECT (regexp_matches(col, 'foo(bar)'))[1] FROM baz
 
+
+Find the worst tables for full table scans:
+
+    SELECT  relname, 
+            100 * idx_scan / (seq_scan + idx_scan) percent_of_times_index_used, 
+            n_live_tup rows_in_table
+    FROM    pg_stat_user_tables
+    WHERE   seq_scan + idx_scan > 0 
+    ORDER BY n_live_tup DESC;
+
+
+Find the worst tables for missed cache rate:
+
+    SELECT  relname, heap_blks_read, heap_blks_hit,
+            round(heap_blks_hit::numeric/(heap_blks_hit + heap_blks_read), 3)
+    FROM    pg_statio_user_tables
+    WHERE   heap_blks_read > 0
+    ORDER BY 4
+    LIMIT   25;
+
+Find the worst tables for missed cache rate on *indexes*:
+
+    SELECT  relname, idx_blks_read, idx_blks_hit,
+            round(idx_blks_hit::numeric/(idx_blks_hit + idx_blks_read), 3)
+    FROM    pg_statio_user_tables
+    WHERE   idx_blks_read > 0
+    ORDER BY 4
+    LIMIT   25;
+
+Find the overall cache hit rate (should be 99%+):
+
+    SELECT  sum(heap_blks_read) as heap_read,
+            sum(heap_blks_hit)  as heap_hit,
+            sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio
+    FROM    pg_statio_user_tables;
+
+
+Show the current transaction isolation level:
+
+    SELECT current_setting('transaction_isolation');
+
+
+

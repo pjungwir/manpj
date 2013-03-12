@@ -28,3 +28,5 @@ To reset your checkout to origin:
 To set a local branch to track a remote branch:
     git branch --set-upstream foo origin/foo
 
+To run git with a different ssh key:
+    ssh-agent bash -c 'git add <private-key>; git <cmd>'
