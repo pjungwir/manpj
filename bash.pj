@@ -28,6 +28,13 @@ a
 .fi
 .RE
 .PP
+.SH COMMAND EDITING
+.IP Ctrl+w
+Delete backwards to the beginning of the word.
+.IP Ctrl+k
+Delete to the end of the line.
+.IP Ctrl+u
+Delete to the start of the line.
 .SH LOGIN
 ~/.bash_profile is executed whenever a user logs in (or, on a Mac, whenever a new Terminal window is opened). ~/.bashrc is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if $BASH_ENV is set, a non-interactive shell will assume it specifies a file to run.
 
