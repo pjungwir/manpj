@@ -20,6 +20,16 @@ TO \fIuser\fR@\fIlocalhost\fR IDENTIFIED BY '\fIpassword\fR';
 FLUSH PRIVILEGES;
 .fi
 .RE
+.PP
+or to let a user create/use any databases starting with their username:
+.PP
+.RS
+.nf
+CREATE USER \fIfoo\fR IDENTIFIED BY '\fIbar\fR';
+GRANT ALL PRIVILEGES ON `foo\\_%`.* TO 'foo'@'%';
+FLUSH PRIVILEGES;
+.fi
+.RE
 .SH AUTHOR
 Paul Jungwirth
 

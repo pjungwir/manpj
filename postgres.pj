@@ -47,5 +47,11 @@ Show the current transaction isolation level:
 
     SELECT current_setting('transaction_isolation');
 
+To start a new Rails project:
 
+    sudo su - postgres -c psql <<-EOQ
+    CREATE USER foo WITH PASSWORD 'bar';
+    ALTER USER foo CREATEDB;
+    EOQ
+    rake db:create db:migrate
 
