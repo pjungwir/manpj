@@ -1,0 +1,29 @@
+See details about a certificate:
+
+  openssl x509 -in server.crt -text
+
+  openssl s_client -connect example.com:443
+
+
+
+Download a remote certificate:
+
+  echo -n | openssl s_client -connect example.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > example.com.crt
+
+
+
+Create a self-signed certificate:
+
+  Generate a CSR:
+    openssl genrsa -des3 -out server.key 2048
+
+  Generate a Private Key:
+    openssl req -new -key server.key -out server.csr
+
+  Remove passphrase from key:
+    cp server.key server.key.org
+    openssl rsa -in server.key.org -out server.key
+
+  Generate self-signed cert:
+    openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+  
