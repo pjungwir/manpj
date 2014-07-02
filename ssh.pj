@@ -1,0 +1,12 @@
+Set up forwarding so you can connect via a bastion host.
+
+For example to set up ssh:
+
+    ssh -L 9022:distantip:22 bastionlogin@bastionbox
+    ssh -p 9022 distantlogin@localhost
+
+Or to set up psql:
+
+    ssh -L 15432:distantip:5432 bastionlogin@bastionbox
+    psql -h localhost:15432
+

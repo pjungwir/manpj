@@ -58,3 +58,9 @@ To start a new Rails project:
 To write to a file:
 
     \o filename
+
+Like a <> b but accounting for nulls:
+
+    a IS DISTINCT FROM b
+
+
