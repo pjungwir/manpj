@@ -1,13 +1,28 @@
+.TH git pj "10 July 2014"
+.SH Comparing branches
+
+To compare two branches:
+    git diff master..develop
+
+To show all commits in develop that aren't in master:
+    git log develop ^master --no-merges
+
+
+.SH Old history
+
 To see an old version of something:
     git show HEAD~1:path/to/file
-Here ~1 means "1 revision before HEAD"
 
+Here ~1 means "1 revision before HEAD"
 
 To find the commit in which you removed an object:
     git log -n 1 -- <filename>
+
 To get it back:
     git checkout <commit>^ <filename>
 
+
+.SH Remotes
 
 To see everything on a remote repository:
     git remote show origin
@@ -17,7 +32,14 @@ To enable access to new remote branches, you might have to do this:
 
 To create a local branch based on a remote branch:
     git checkout -b <branch> origin/<branch>
+
 http://stackoverflow.com/questions/1783405/git-checkout-remote-branch
+
+To set a local branch to track a remote branch:
+    git branch --set-upstream foo origin/foo
+
+
+.SH Erasing
 
 To erase the last commit without altering your index or checkout:
     git reset --soft HEAD~1
@@ -25,8 +47,9 @@ To erase the last commit without altering your index or checkout:
 To reset your checkout to origin:
     git fetch origin && git reset --hard origin/master
 
-To set a local branch to track a remote branch:
-    git branch --set-upstream foo origin/foo
+
+.SH Security
 
 To run git with a different ssh key:
     ssh-agent bash -c 'git add <private-key>; git <cmd>'
+
