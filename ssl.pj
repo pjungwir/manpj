@@ -14,15 +14,14 @@ Download a remote certificate:
 
 Create a self-signed certificate:
 
-  Generate a CSR:
-    openssl genrsa -des3 -out server.key 2048
-
   Generate a Private Key:
-    openssl req -new -key server.key -out server.csr
+    openssl genrsa -des3 -out server.pass.key 2048
 
   Remove passphrase from key:
-    cp server.key server.key.org
-    openssl rsa -in server.key.org -out server.key
+    openssl rsa -in server.pass.key -out server.key
+
+  Generate a CSR:
+    openssl req -new -key server.key -out server.csr
 
   Generate self-signed cert:
     openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
