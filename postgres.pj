@@ -63,4 +63,78 @@ Like a <> b but accounting for nulls:
 
     a IS DISTINCT FROM b
 
+Find the current queries:
+
+    SELECT datname,procpid,current_query FROM pg_stat_activity;
+
+or in 9.3:
+
+    SELECT datname, pid, query FROM pg_stat_activity ORDER BY pid;
+
+Kill a query:
+
+   SELECT pg_cancel_backend(12345);
+
+
+To get the number of years between two dates:
+
+  SELECT  extract(year from age(now(), '2014-01-01'));
+
+NOT:
+
+  SELECT  extract(year from now() - '2014-01-01');
+
+
+
+Set or overwrite an hstore key/value:
+
+  UPDATE hstore_test SET data = data || '"key4"=>"some value"'::hstore
+
+
+
+replication
+===========
+
+master (10.0.1.1)
+-----------------
+
+In postgresql.conf:
+
+    wal_level = hot_standby
+    max_wal_senders = 3
+    checkpoint_segments = 8
+    wal_keep_segments = 8
+    archive_mode = on
+    archive_command = 'rsync -aq -e "ssh -o StrictHostKeyChecking=no" %p 10.0.1.2:/var/lib/postgresql/9.3/archive/%f'
+    archive_timeout = 3600
+
+
+slave (10.0.1.2)
+----------------
+
+In postgresql.conf:
+
+    hot_standby = on
+
+Has a recovery.conf file at e.g. /var/lib/postgresql/9.3/main/recovery.conf:
+
+    standby_mode = 'on'
+    primary_conninfo = 'host=10.0.1.1 port=5432 user=postgres'
+    trigger_file = '/var/lib/postgresql/9.3/main/trigger'
+
+    # Shell command to execute an archived segment of WAL file series.
+    # Required for archive recovery if streaming replication falls behind too far.
+    restore_command = 'cp /var/lib/postgresql/9.3/archive/%f %p'
+    archive_cleanup_command = '/usr/lib/postgresql/9.3/bin/pg_archivecleanup /var/lib/postgresql/9.3/archive/ %r'
+    
+
+failover
+--------
+
+Just create a trigger file on the slave, e.g.:
+
+    touch /var/lib/postgresql/9.3/main/trigger
+
+
+
 

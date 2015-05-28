@@ -2,7 +2,9 @@ See details about a certificate:
 
   openssl x509 -in server.crt -text
 
-  openssl s_client -connect example.com:443
+  openssl s_client -connect example.com:443 -showcerts
+
+  openssl s_client -connect example.com:443 | openssl x509 -text
 
 
 

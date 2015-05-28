@@ -16,3 +16,6 @@ To look for new packages:
 To find the package containing a given file:
   apt-file search <filename>
 
+To upgrade only one package:
+  apt-get install --only-upgrade <package>
+
