@@ -8,6 +8,7 @@ Do this if you're looking for something:
 .RS
 .nf
 yum list available '*docbook*'
+yum provides '*filename'
 .fi
 .RE
 .PP
