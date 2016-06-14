@@ -7,6 +7,9 @@ To compare two branches:
 To show all commits in develop that aren't in master:
     git log develop ^master --no-merges
 
+To diff by date:
+    git log 'master@{3 days ago}' master
+    git log 'master@{3 days ago}' master -- path/to/file
 
 .SH Old history
 

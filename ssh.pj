@@ -23,4 +23,6 @@ If you login remotely, you need to say this:
 
     eval $(ssh-agent -s) && ssh-add
 
+If you too much ssh keys in your ssh agent:
 
+    ssh -o PubkeyAuthentication=no root@host

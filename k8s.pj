@@ -1,0 +1,4 @@
+kubectl --context=staging get nodes
+
+kubectl --context=staging get pods
+
