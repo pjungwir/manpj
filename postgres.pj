@@ -285,6 +285,26 @@ Get a CSV file:
 .PP
 
 
+See default permissions for a user:
+
+.PP
+.RS
+.nf
+    \\ddp
+.fi
+.RE
+.PP
+
+Grant default permissions to a user (so they get the same permissions on future-created tables and views):
+
+.PP
+.RS
+.nf
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO the_user;
+.fi
+.RE
+.PP
+
 .SH AUTHOR
 Paul Jungwirth
 .SH COPYRIGHT
