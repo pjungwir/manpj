@@ -284,6 +284,7 @@ Get a CSV file:
 .RE
 .PP
 
+.SH "PERMISSIONS"
 
 See default permissions for a user:
 
