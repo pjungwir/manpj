@@ -56,3 +56,28 @@ To reset your checkout to origin:
 To run git with a different ssh key:
     ssh-agent bash -c 'git add <private-key>; git <cmd>'
 
+
+.SH Blame
+
+To skip whitespace-only changes, use the -w option.
+
+To ask about specific lines, use -L:
+
+    git blame -L10,+5 -- path/to/file
+
+That will show only information about line 10 and the next 5 lines.
+
+To get the second-to-last change (or third-to-last, etc.),
+ask git to run blame as of the commit right before the 
+one you want to skip:
+
+    git blame 123abc^ -- path/to/file
+
+where 123abc is the commit that later changed those lines.
+
+It is probably useful to combine this with -L:
+
+    git blame -L 10,+5 123abc^ -- path/to/file
+
+Credits: http://stackoverflow.com/questions/5098256/git-blame-prior-commits
+
