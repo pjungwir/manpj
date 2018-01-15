@@ -148,7 +148,17 @@ or in 9.3:
 .PP
 .RS
 .nf
-    SELECT datname, pid, query FROM pg_stat_activity ORDER BY pid;
+    SELECT datname, pid, state, waiting, query, query_start FROM pg_stat_activity ORDER BY query_start;
+.fi
+.RE
+.PP
+
+or in 9.6:
+
+.PP
+.RS
+.nf
+    SELECT datname, pid, state, wait_event, query, query_start FROM pg_stat_activity ORDER BY query_start;
 .fi
 .RE
 .PP
@@ -305,6 +315,67 @@ Grant default permissions to a user (so they get the same permissions on future-
 .fi
 .RE
 .PP
+
+You can use \\l to list privileges on each database.
+.PP
+You'll see lines like `db_user=CTc/postgres` and `=c/postgres`.
+The name before the equals sign is the user with those privileges.
+If there is no name, it means the special `PUBLIC` role, which is everyone.
+The name after the slash is who granted the privileges.
+
+.PP
+c - connect to the database
+.PP
+C - create new schemas
+.PP
+T - create temporary tables
+.PP
+
+To see the permissions on a given table: \\z table_name. Or \\dp for all tables/views/sequences.
+.PP
+The letters mean (https://www.postgresql.org/docs/9.5/static/sql-grant.html):
+
+.PP
+a - insert (add)
+.PP
+r - select (read)
+.PP
+w - update (write)
+.PP
+d - delete
+.PP
+D - truncate (really delete)
+.PP
+x - references
+.PP
+t - trigger
+.PP
+* - and you can grant this privilege to others
+.PP
+
+Also for other objects (functions and schemas), you'll see:
+
+.PP
+X - execute
+.PP
+U - usage
+.PP
+
+.PP
+Note that neither command shows default privileges, unlike
+
+.PP
+.RS
+.nf
+    SELECT  grantee, privilege_type
+    FROM    information_schema.role_table_grants
+    WHERE   table_name = 'foo'
+    ;
+.fi
+.RE
+.PP
+
+This is an interesting summary also: https://www.postgresql.org/message-id/20120703014228.11c82a45%40james.intern
 
 .SH AUTHOR
 Paul Jungwirth

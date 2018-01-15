@@ -1,0 +1,6 @@
+If you have a ten-page contract with a signature page on page 10,
+and sign the last page and scan it,
+and you don't want to scan the other nine pages too:
+
+    pdftk A=contract.pdf B=signature.pdf cat A1-9 B output signed-contract.pdf
+

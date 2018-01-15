@@ -24,6 +24,9 @@ To find the commit in which you removed an object:
 To get it back:
     git checkout <commit>^ <filename>
 
+To use git blame but only show changes prior to an old commit:
+    git blame <commit>^ -- <filename>
+
 
 .SH Remotes
 

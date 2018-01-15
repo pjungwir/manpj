@@ -28,3 +28,6 @@ Create a self-signed certificate:
   Generate self-signed cert:
     openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt
   
+Or in one line:
+
+    openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
