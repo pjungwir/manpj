@@ -4,6 +4,9 @@ See details about a certificate:
 
   openssl s_client -connect example.com:443 -showcerts
 
+  # To use SNI:
+  openssl s_client -connect example.com:443 -servername example.com -showcerts
+
   openssl s_client -connect example.com:443 | openssl x509 -text
 
 
