@@ -9,11 +9,11 @@ $ irb
 
 curl http://169.254.169.254/latest/meta-data/iam/security-credentials/staging-db
 
-
 MFA with the CLI
 ================
 
 https://github.com/broamski/aws-mfa
 
 AWS_PROFILE=foo aws-mfa
+AWS_PROFILE=foo aws-mfa foo --long-term-suffix=none --sort-term-suffix=mfa
 AWS_PROFILE=foo-mfa aws ec2 describe-instances --region us-west-2

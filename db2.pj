@@ -1,0 +1,5 @@
+source ~/sqllib/db2profile
+db2start
+db2
+create database paul  (first time only)
+connect to paul
