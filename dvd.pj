@@ -20,4 +20,7 @@ You may include an intermediate step 2.5: copy the DVD to your hard drive. You c
 
 But there are two problems with this workflow. First, consumer blank DVDs only hold 4.7 GB, so you must remaster the video to fit. You can use DVD2One for this, perhaps also Handbrake or VLC. Second, the DVD may break the standard as a means of copy protection, and this can confuse your software (your burner, I think). DVD2One can also help you correct these standards violations.
 
+On Linux, use ffmpeg:
+
+cat /media/paul/name-of-the-dvd/VIDEO_TS/VTS_01_*VOB | ffmpeg -i - -s 720x576 -c:v mpeg4 -c:a mp3 -qmin 1 -qmax 3 -b:a 256k -b:v 4000k -y name-of-the-dvd.avi
 

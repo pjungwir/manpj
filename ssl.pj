@@ -34,3 +34,14 @@ Create a self-signed certificate:
 Or in one line:
 
     openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+
+
+Upload a cert to AWS:
+
+  aws iam upload-server-certificate \
+    --server-certificate-name STAR.example.com \
+    --certificate-body file://STAR.example.com.crt
+    --private-key file://STAR.example.com.key \
+    --certificate-chain file://chain.crt \
+    --path /
+
