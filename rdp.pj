@@ -1,0 +1,9 @@
+Disconnect RDP session:
+
+    qwinsta /server:<server>
+    reset session <ID> /server:<server>
+
+or just:
+
+    qwinsta
+    reset session <ID>
