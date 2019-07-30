@@ -14,6 +14,13 @@ MFA with the CLI
 
 https://github.com/broamski/aws-mfa
 
-AWS_PROFILE=foo aws-mfa
-AWS_PROFILE=foo aws-mfa foo --long-term-suffix=none --sort-term-suffix=mfa
+```
+pip install aws-mfa
+```
+
+Add `aws_mfa_device = ....` to your `~/.aws/credentials`.
+
+Then say:
+
+AWS_PROFILE=foo aws-mfa --long-term-suffix=none --short-term-suffix=mfa
 AWS_PROFILE=foo-mfa aws ec2 describe-instances --region us-west-2
