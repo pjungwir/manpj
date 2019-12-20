@@ -59,6 +59,9 @@ To reset your checkout to origin:
 To run git with a different ssh key:
     ssh-agent bash -c 'git add <private-key>; git <cmd>'
 
+or even better (especially if you have multiple Github/Bitbucket accounts):
+
+    git config core.sshCommand "ssh -i ~/.ssh/foo -F /dev/null"
 
 .SH Blame
 
