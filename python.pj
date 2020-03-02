@@ -43,6 +43,54 @@ Append adds one element; extend adds many:
 [1, 2, 3, 4, 5, 6, 7]
 .fi
 .RE
+.PP
+Logging
+.PP
+If you're seeing things printed twice:
+.PP
+This happens when one logger sends a message to a handler
+and then propagates the message to the root logger which also sends the message to the same handler.
+You can fix it like this:
+.PP
+.RS
+.nf
+[logger_root]
+level=INFO
+handlers=stream_handler
+
+[logger_mypackage.foo]
+level=DEBUG
+handlers=stream_handler
+qualname=mypackage.foo
+propagate=0
+.fi
+.RE
+.PP
+or like this:
+.PP
+.RS
+.nf
+[logger_root]
+level=INFO
+handlers=stream_handler
+
+[logger_mypackage.foo]
+level=DEBUG
+handlers=
+qualname=mypackage.foo
+.fi
+.RE
+
+Note you *must* have a `handlers` key, but it can be blank.
+
+.PP
+The first approach prevents propagating the message up to the root logger.
+The second approach just avoids adding the same handler twice.
+The second approach seems more elegant,
+although I've seen the propagate=0 approach recommended online.
+.PP
+.fi
+.RE
 .SH AUTHOR
 Paul Jungwirth
 .SH COPYRIGHT
