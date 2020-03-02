@@ -42,3 +42,20 @@ rm ./libgcj-common_6.4-3ubuntu1_all.deb
 rm ./pdftk_2.02-4build1_amd64.deb
 rm ./pdftk-dbg_2.02-4build1_amd64.deb
 ```
+
+On a Mac, use poppler instead:
+
+```
+pdfseparate the-file.pdf 'p%d.pdf'
+pdfunite p{1,2,3}.pdf signature-page.pdf the-file-signed.pdf
+```
+
+or with automatic page counting:
+
+```
+pdfseparate the-file.pdf 'p%d.pdf'
+pdfunite p{1..$(pdfinfo the-file.pdf | grep Pages | cut -d: -f2 | xargs)}.pdf signature-page.pdf the-file-signed.pdf
+```
+
+Or you can use Preview if you really have to: print-to-pdf the pages you want,
+then use Edit > Insert > Page from File... to add another.
