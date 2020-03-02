@@ -5,3 +5,5 @@ To eject a CD that doesn't appear in the Finder:
 Use these commands to read from and write to the clipboard:
   - pbpaste
   - pbcopy
+
+Cmd-Opt-r - recovery
