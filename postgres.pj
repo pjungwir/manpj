@@ -437,6 +437,20 @@ Note that neither command shows default privileges, unlike
 
 This is an interesting summary also: https://www.postgresql.org/message-id/20120703014228.11c82a45%40james.intern
 
+.SH POSTGIS
+
+On a Mac using Peter Eisentraut's Postgres formulae, use pex to install extensions. For example:
+
+.PP
+.RS
+.nf
+pex -g /usr/local/opt/postgresql@10 install postgis
+.fi
+.RE
+.PP
+
+And you can solve lots of compilation errors with the tricks from https://gist.github.com/skissane/0487c097872a7f6d0dcc9bcd120c2ccd
+
 .SH AUTHOR
 Paul Jungwirth
 .SH COPYRIGHT
