@@ -44,6 +44,8 @@ http://stackoverflow.com/questions/1783405/git-checkout-remote-branch
 To set a local branch to track a remote branch:
     git branch --set-upstream foo origin/foo
 
+To make a bare repo you can push to via ssh:
+    git init --bare .
 
 .SH Erasing
 

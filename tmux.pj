@@ -11,4 +11,8 @@ Change the bottom bar color:
 
 Or use `set -g` to change it for every tmux session on the box.
 
+# Splitting the Pane
 
+^A " - split vertically
+^A % - split horizontally (allegedly)
+^A arrow key - move to another pane

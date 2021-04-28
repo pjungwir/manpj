@@ -1,6 +1,9 @@
 dpkg does the installing; apt-get manages depencendies and pulls things down from repositories.
 
 
+To install a `.deb` file:
+  dpkg -i foo.deb
+
 To list installed packages:
   dpkg --list [pattern]     # pattern is something like 'wine*'
 
@@ -22,3 +25,5 @@ To list what can be upgraded:
 To upgrade only one package:
   apt-get install --only-upgrade <package>
 
+To upgrade everything:
+  apt-get upgrade
