@@ -17,6 +17,11 @@ Download a remote certificate:
 
 
 
+Test that a key matches a certificate:
+
+(openssl x509 -noout -modulus -in foo.crt ; openssl rsa -noout -modulus -in foo.key) | uniq
+
+
 Create a self-signed certificate:
 
   Generate a Private Key:
