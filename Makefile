@@ -1,13 +1,31 @@
+# Build a list of all the foo.pj files we want to create
+# by looking for foo.md files:
+MANPAGES=$(shell find . -maxdepth 1 -name '*.md' -exec basename \{\} .md \; | sed 's/$$/.pj/')
+
 # - Builds the html version of these man pages.
 # - Builds the html TOC.
-
 default: html toc
+
+# Converts md files to pj files (i.e. man format).
+all: $(MANPAGES)
+
+%.pj: %.pandoc
+	pandoc --standalone --to man $< -o $@
+
+# Create intermediate foo.pandoc files
+# which are just copies of foo.md files
+# but with a pandoc metadata header.
+%.pandoc: %.md Makefile
+	echo "% $*(pj)" > $@
+	echo "% Paul A. Jungwirth" >> $@
+	echo "% `git log --pretty=format:%as $*.md`" >> $@
+	cat $< >> $@
 
 install:
 	mkdir -p "$$HOME/man/manpj"
 	tar cf - *.pj | (cd "$$HOME/man/manpj" && tar xvf -)
 
-html:
+html: all
 	mkdir -p build
 	for f in *.pj; do \
 		m=`basename $$f .pj`; \
