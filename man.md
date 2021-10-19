@@ -1,3 +1,4 @@
+```
 .\" BLAH BLAH
 .TH man pj "2 July 2005"
 .SH NAME
@@ -69,3 +70,4 @@ Any references to other documentation.
 Written by Paul Jungwirth
 .SH COPYRIGHT
 Copyright \(co 2005 Paul Jungwirth
+```

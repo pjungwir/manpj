@@ -10,7 +10,7 @@ default: html toc
 all: $(MANPAGES)
 
 %.pj: %.pandoc
-	pandoc --standalone --to man $< -o $@
+	pandoc -f markdown-tex_math_dollars --standalone --to man $< -o $@
 
 # Create intermediate foo.pandoc files
 # which are just copies of foo.md files

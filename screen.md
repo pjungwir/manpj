@@ -1,48 +1,30 @@
-.\" notes about screen
-.TH screen pj "20 January 2012"
-.SH NAME
-screen
+## STARTING
 
-.SH STARTING
+Create a new session named *name*:
 
-Create a new session named \fIname\fR:
-.RS
-.nf
-screen -S \fIname\fR
-.fi
-.RE
+```
+screen -S *name*
+```
 
-.SH COMMANDS
+## COMMANDS
 
-.TP
-.B ^A'
-list windows of the current session.
+- ^A'
+  list windows of the current session.
 
-.TP
-.B ^A0..9
-switch to window 0..0.
+- ^A0..9
+  switch to window 0..0.
 
-.TP
-.B ^A^A
-switch the last window.
+- ^A^A
+  switch the last window.
 
-.TP
-.B ^Ac
-create a new window and open it.
+- ^Ac
+  create a new window and open it.
 
-.TP
-.B ^A^C
-create a new window and open it.
+- ^A^C
+  create a new window and open it.
 
-.TP
-.B ^Aa
-send ^A to the current window.
+- ^Aa
+  send ^A to the current window.
 
-.TP
-.B ^AA
-title the current window.
-
-.SH AUTHOR
-Written by Paul Jungwirth
-.SH COPYRIGHT
-Copyright \(co 2012 Paul Jungwirth
+- ^AA
+  title the current window.
