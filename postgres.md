@@ -1,458 +1,340 @@
-.TH postgres pj "15 June 2015"
-.SH NAME
-postgres
-
-.SH "DATABASE ADMINISTRATION"
+# DATABASE ADMINISTRATION
 
 Find the worst tables for full table scans:
-.PP
-.RS
-.nf
-    SELECT  relname, 
-            100 * idx_scan / (seq_scan + idx_scan) percent_of_times_index_used, 
-            n_live_tup rows_in_table
-    FROM    pg_stat_user_tables
-    WHERE   seq_scan + idx_scan > 0 
-    ORDER BY n_live_tup DESC;
-.fi
-.RE
-.PP
+
+```
+SELECT  relname, 
+        100 * idx_scan / (seq_scan + idx_scan) percent_of_times_index_used, 
+        n_live_tup rows_in_table
+FROM    pg_stat_user_tables
+WHERE   seq_scan + idx_scan > 0 
+ORDER BY n_live_tup DESC;
+```
+
 Find the worst tables for missed cache rate:
 
-.PP
-.RS
-.nf
-    SELECT  relname, heap_blks_read, heap_blks_hit,
-            round(heap_blks_hit::numeric/(heap_blks_hit + heap_blks_read), 3)
-    FROM    pg_statio_user_tables
-    WHERE   heap_blks_read > 0
-    ORDER BY 4
-    LIMIT   25;
-.fi
-.RE
-.PP
+
+```
+SELECT  relname, heap_blks_read, heap_blks_hit,
+        round(heap_blks_hit::numeric/(heap_blks_hit + heap_blks_read), 3)
+FROM    pg_statio_user_tables
+WHERE   heap_blks_read > 0
+ORDER BY 4
+LIMIT   25;
+```
+
 Find the worst tables for missed cache rate on *indexes*:
 
-.PP
-.RS
-.nf
-    SELECT  relname, idx_blks_read, idx_blks_hit,
-            round(idx_blks_hit::numeric/(idx_blks_hit + idx_blks_read), 3)
-    FROM    pg_statio_user_tables
-    WHERE   idx_blks_read > 0
-    ORDER BY 4
-    LIMIT   25;
-.fi
-.RE
-.PP
+
+```
+SELECT  relname, idx_blks_read, idx_blks_hit,
+        round(idx_blks_hit::numeric/(idx_blks_hit + idx_blks_read), 3)
+FROM    pg_statio_user_tables
+WHERE   idx_blks_read > 0
+ORDER BY 4
+LIMIT   25;
+```
 
 Find the overall cache hit rate (should be 99%+):
 
-.PP
-.RS
-.nf
-    SELECT  sum(heap_blks_read) as heap_read,
-            sum(heap_blks_hit)  as heap_hit,
-            sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio
-    FROM    pg_statio_user_tables;
-.fi
-.RE
-.PP
+
+```
+SELECT  sum(heap_blks_read) as heap_read,
+        sum(heap_blks_hit)  as heap_hit,
+        sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio
+FROM    pg_statio_user_tables;
+```
 
 Find the biggest tables from the current database:
 
-.PP
-.RS
-.nf
-    SELECT nspname || '.' || relname AS "relation",
-           pg_size_pretty(pg_relation_size(C.oid)) AS "size"
-    FROM pg_class C
-    LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
-    WHERE nspname NOT IN ('pg_catalog', 'information_schema')
-    ORDER BY pg_relation_size(C.oid) DESC
-.fi
-.RE
-.PP
 
+```
+SELECT nspname || '.' || relname AS "relation",
+       pg_size_pretty(pg_relation_size(C.oid)) AS "size"
+FROM pg_class C
+LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
+WHERE nspname NOT IN ('pg_catalog', 'information_schema')
+ORDER BY pg_relation_size(C.oid) DESC
+```
 
-.SH "QUERIES"
+# QUERIES
 
-regexp_matches(string, pattern)
-.PP
+`regexp_matches(string, pattern)`
+
 Unforunately this returns a setof text[] with *all* the matches found. If you just want one, you can do this:
-.PP
-.RS
-.nf
-    SELECT (regexp_matches(col, 'foo(bar)'))[1] FROM baz
-.fi
-.RE
-.PP
 
+```
+SELECT (regexp_matches(col, 'foo(bar)'))[1] FROM baz
+```
 
 Show the current transaction isolation level:
 
-.PP
-.RS
-.nf
-    SELECT current_setting('transaction_isolation');
-.fi
-.RE
-.PP
+
+```
+SELECT current_setting('transaction_isolation');
+```
 
 To start a new Rails project:
 
-.PP
-.RS
-.nf
-    sudo su - postgres -c psql <<-EOQ
-    CREATE USER foo WITH PASSWORD 'bar';
-    ALTER USER foo CREATEDB;
-    EOQ
-    rake db:create db:migrate
-.fi
-.RE
-.PP
+
+```
+sudo su - postgres -c psql <<-EOQ
+CREATE USER foo WITH PASSWORD 'bar';
+ALTER USER foo CREATEDB;
+EOQ
+rake db:create db:migrate
+```
 
 To write to a file:
 
-.PP
-.RS
-.nf
-    \o filename
-.fi
-.RE
-.PP
+
+```
+\o filename
+```
 
 Like a <> b but accounting for nulls:
 
-.PP
-.RS
-.nf
-    a IS DISTINCT FROM b
-.fi
-.RE
-.PP
+
+```
+a IS DISTINCT FROM b
+```
 
 Find the current queries:
 
-.PP
-.RS
-.nf
-    SELECT datname,procpid,current_query FROM pg_stat_activity;
-.fi
-.RE
-.PP
+
+```
+SELECT datname,procpid,current_query FROM pg_stat_activity;
+```
 
 or in 9.3:
 
-.PP
-.RS
-.nf
-    SELECT datname, pid, state, waiting, query, query_start FROM pg_stat_activity ORDER BY query_start;
-.fi
-.RE
-.PP
+
+```
+SELECT datname, pid, state, waiting, query, query_start FROM pg_stat_activity ORDER BY query_start;
+```
 
 or in 9.6:
 
-.PP
-.RS
-.nf
-    SELECT datname, pid, state, wait_event, query, query_start FROM pg_stat_activity ORDER BY query_start;
-.fi
-.RE
-.PP
+
+```
+SELECT datname, pid, state, wait_event, query, query_start FROM pg_stat_activity ORDER BY query_start;
+```
 
 Show the current locks:
 
-.PP
-.RS
-.nf
-    SELECT  locktype,
-            database,
-            relation::regclass,
-            page,
-            tuple,
-            virtualxid,
-            transactionid,
-            classid,
-            objid,
-            objsubid,
-            virtualtransaction,
-            pid,
-            mode,
-            granted
-    FROM    pg_locks
-    ORDER BY pid
-    ;
-.fi
-.RE
-.PP
+
+```
+SELECT  locktype,
+        database,
+        relation::regclass,
+        page,
+        tuple,
+        virtualxid,
+        transactionid,
+        classid,
+        objid,
+        objsubid,
+        virtualtransaction,
+        pid,
+        mode,
+        granted
+FROM    pg_locks
+ORDER BY pid
+;
+```
 
 Show the blocked/blocking pids and queries:
 
-.PP
-.RS
-.nf
-
-    SELECT blocked_locks.pid     AS blocked_pid,
-           blocked_activity.usename  AS blocked_user,
-           blocking_locks.pid     AS blocking_pid,
-           blocking_activity.usename AS blocking_user,
-           blocked_activity.query    AS blocked_statement,
-           blocking_activity.query   AS current_statement_in_blocking_process
-     FROM  pg_catalog.pg_locks         blocked_locks
-      JOIN pg_catalog.pg_stat_activity blocked_activity  ON blocked_activity.pid = blocked_locks.pid
-      JOIN pg_catalog.pg_locks         blocking_locks
-        ON blocking_locks.locktype = blocked_locks.locktype
-       AND blocking_locks.DATABASE IS NOT DISTINCT FROM blocked_locks.DATABASE
-       AND blocking_locks.relation IS NOT DISTINCT FROM blocked_locks.relation
-       AND blocking_locks.page IS NOT DISTINCT FROM blocked_locks.page
-       AND blocking_locks.tuple IS NOT DISTINCT FROM blocked_locks.tuple
-       AND blocking_locks.virtualxid IS NOT DISTINCT FROM blocked_locks.virtualxid
-       AND blocking_locks.transactionid IS NOT DISTINCT FROM blocked_locks.transactionid
-       AND blocking_locks.classid IS NOT DISTINCT FROM blocked_locks.classid
-       AND blocking_locks.objid IS NOT DISTINCT FROM blocked_locks.objid
-       AND blocking_locks.objsubid IS NOT DISTINCT FROM blocked_locks.objsubid
-       AND blocking_locks.pid != blocked_locks.pid
-      JOIN pg_catalog.pg_stat_activity blocking_activity ON blocking_activity.pid = blocking_locks.pid
-     WHERE NOT blocked_locks.GRANTED
-    ;
-
-.PP
-.RS
-.nf
+```
+SELECT blocked_locks.pid     AS blocked_pid,
+       blocked_activity.usename  AS blocked_user,
+       blocking_locks.pid     AS blocking_pid,
+       blocking_activity.usename AS blocking_user,
+       blocked_activity.query    AS blocked_statement,
+       blocking_activity.query   AS current_statement_in_blocking_process
+ FROM  pg_catalog.pg_locks         blocked_locks
+  JOIN pg_catalog.pg_stat_activity blocked_activity  ON blocked_activity.pid = blocked_locks.pid
+  JOIN pg_catalog.pg_locks         blocking_locks
+    ON blocking_locks.locktype = blocked_locks.locktype
+   AND blocking_locks.DATABASE IS NOT DISTINCT FROM blocked_locks.DATABASE
+   AND blocking_locks.relation IS NOT DISTINCT FROM blocked_locks.relation
+   AND blocking_locks.page IS NOT DISTINCT FROM blocked_locks.page
+   AND blocking_locks.tuple IS NOT DISTINCT FROM blocked_locks.tuple
+   AND blocking_locks.virtualxid IS NOT DISTINCT FROM blocked_locks.virtualxid
+   AND blocking_locks.transactionid IS NOT DISTINCT FROM blocked_locks.transactionid
+   AND blocking_locks.classid IS NOT DISTINCT FROM blocked_locks.classid
+   AND blocking_locks.objid IS NOT DISTINCT FROM blocked_locks.objid
+   AND blocking_locks.objsubid IS NOT DISTINCT FROM blocked_locks.objsubid
+   AND blocking_locks.pid != blocked_locks.pid
+  JOIN pg_catalog.pg_stat_activity blocking_activity ON blocking_activity.pid = blocking_locks.pid
+ WHERE NOT blocked_locks.GRANTED
+```
 
 Kill a query:
 
-.PP
-.RS
-.nf
-   SELECT pg_cancel_backend(12345);
-.fi
-.RE
-.PP
 
+```
+SELECT pg_cancel_backend(12345);
+```
 
 To get the number of years between two dates:
 
-.PP
-.RS
-.nf
-  SELECT  extract(year from age(now(), '2014-01-01'));
-.fi
-.RE
-.PP
+
+```
+SELECT  extract(year from age(now(), '2014-01-01'));
+```
 
 NOT:
 
-.PP
-.RS
-.nf
-  SELECT  extract(year from now() - '2014-01-01');
-.fi
-.RE
-.PP
 
-
+```
+SELECT  extract(year from now() - '2014-01-01');
+```
 
 Set or overwrite an hstore key/value:
 
-.PP
-.RS
-.nf
-  UPDATE hstore_test SET data = data || '"key4"=>"some value"'::hstore
-.fi
-.RE
-.PP
 
-.PP
-.RS
-.nf
-  UPDATE hstore_test SET data = data || hstore(ARRAY['key4', 'some value'])
-.fi
-.RE
-.PP
+```
+UPDATE hstore_test SET data = data || '"key4"=>"some value"'::hstore
+
+UPDATE hstore_test SET data = data || hstore(ARRAY['key4', 'some value'])
+```
 
 
-
-.SH REPLICATION
+# REPLICATION
 
 master (10.0.1.1)
-.PP
-In postgresql.conf:
 
-.PP
-.RS
-.nf
-    wal_level = hot_standby
-    max_wal_senders = 3
-    checkpoint_segments = 8
-    wal_keep_segments = 8
-    archive_mode = on
-    archive_command = 'rsync -aq -e "ssh -o StrictHostKeyChecking=no" %p 10.0.1.2:/var/lib/postgresql/9.3/archive/%f'
-    archive_timeout = 3600
-.fi
-.RE
-.PP
+In `postgresql.conf`:
 
+
+```
+wal_level = hot_standby
+max_wal_senders = 3
+checkpoint_segments = 8
+wal_keep_segments = 8
+archive_mode = on
+archive_command = 'rsync -aq -e "ssh -o StrictHostKeyChecking=no" %p 10.0.1.2:/var/lib/postgresql/9.3/archive/%f'
+archive_timeout = 3600
+```
 
 slave (10.0.1.2)
-.PP
 
-In postgresql.conf:
+In `postgresql.conf`:
 
-.PP
-.RS
-.nf
-    hot_standby = on
-.fi
-.RE
-.PP
 
-Has a recovery.conf file at e.g. /var/lib/postgresql/9.3/main/recovery.conf:
+```
+hot_standby = on
+```
 
-.PP
-.RS
-.nf
-    standby_mode = 'on'
-    primary_conninfo = 'host=10.0.1.1 port=5432 user=postgres'
-    trigger_file = '/var/lib/postgresql/9.3/main/trigger'
+Has a `recovery.conf` file at e.g. `/var/lib/postgresql/9.3/main/recovery.conf`:
 
-    # Shell command to execute an archived segment of WAL file series.
-    # Required for archive recovery if streaming replication falls behind too far.
-    restore_command = 'cp /var/lib/postgresql/9.3/archive/%f %p'
-    archive_cleanup_command = '/usr/lib/postgresql/9.3/bin/pg_archivecleanup /var/lib/postgresql/9.3/archive/ %r'
-.fi
-.RE
-.PP
-    
+
+```
+standby_mode = 'on'
+primary_conninfo = 'host=10.0.1.1 port=5432 user=postgres'
+trigger_file = '/var/lib/postgresql/9.3/main/trigger'
+
+# Shell command to execute an archived segment of WAL file series.
+# Required for archive recovery if streaming replication falls behind too far.
+restore_command = 'cp /var/lib/postgresql/9.3/archive/%f %p'
+archive_cleanup_command = '/usr/lib/postgresql/9.3/bin/pg_archivecleanup /var/lib/postgresql/9.3/archive/ %r'
+```
+  
 
 failover
-.PP
 
 Just create a trigger file on the slave, e.g.:
 
-.PP
-.RS
-.nf
-    touch /var/lib/postgresql/9.3/main/trigger
-.fi
-.RE
-.PP
+
+```
+touch /var/lib/postgresql/9.3/main/trigger
+```
 
 
 Get a CSV file:
 
-.PP
-.RS
-.nf
-    COPY (
-      ...
-    ) TO '/tmp/foo.csv' WITH CSV HEADER
-.fi
-.RE
-.PP
 
-.SH "PERMISSIONS"
+```
+COPY (
+  ...
+) TO '/tmp/foo.csv' WITH CSV HEADER
+```
+
+# PERMISSIONS
 
 See default permissions for a user:
 
-.PP
-.RS
-.nf
-    \\ddp
-.fi
-.RE
-.PP
+
+```
+\\ddp
+```
 
 Grant default permissions to a user (so they get the same permissions on future-created tables and views):
 
-.PP
-.RS
-.nf
-    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO the_user;
-.fi
-.RE
-.PP
 
-You can use \\l to list privileges on each database.
-.PP
+```
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO the_user;
+```
+
+You can use `\l` to list privileges on each database.
+
 You'll see lines like `db_user=CTc/postgres` and `=c/postgres`.
 The name before the equals sign is the user with those privileges.
 If there is no name, it means the special `PUBLIC` role, which is everyone.
 The name after the slash is who granted the privileges.
 
-.PP
-c - connect to the database
-.PP
-C - create new schemas
-.PP
-T - create temporary tables
-.PP
+- c: connect to the database
 
-To see the permissions on a given table: \\z table_name. Or \\dp for all tables/views/sequences.
-.PP
+- C: create new schemas
+
+- T: create temporary tables
+
+
+To see the permissions on a given table: `\z table_name`. Or `\dp` for all tables/views/sequences.
+
 The letters mean (https://www.postgresql.org/docs/9.5/static/sql-grant.html):
 
-.PP
-a - insert (add)
-.PP
-r - select (read)
-.PP
-w - update (write)
-.PP
-d - delete
-.PP
-D - truncate (really delete)
-.PP
-x - references
-.PP
-t - trigger
-.PP
-* - and you can grant this privilege to others
-.PP
+- a: insert (add)
+
+- r: select (read)
+
+- w: update (write)
+
+- d: delete
+
+- D: truncate (really delete)
+
+- x: references
+
+- t: trigger
+
+- \*: and you can grant this privilege to others
 
 Also for other objects (functions and schemas), you'll see:
 
-.PP
-X - execute
-.PP
-U - usage
-.PP
+- X: execute
 
-.PP
+- U: usage
+
 Note that neither command shows default privileges, unlike
 
-.PP
-.RS
-.nf
-    SELECT  grantee, privilege_type
-    FROM    information_schema.role_table_grants
-    WHERE   table_name = 'foo'
-    ;
-.fi
-.RE
-.PP
+
+```
+SELECT  grantee, privilege_type
+FROM    information_schema.role_table_grants
+WHERE   table_name = 'foo'
+```
 
 This is an interesting summary also: https://www.postgresql.org/message-id/20120703014228.11c82a45%40james.intern
 
-.SH POSTGIS
+# POSTGIS
 
 On a Mac using Peter Eisentraut's Postgres formulae, use pex to install extensions. For example:
 
-.PP
-.RS
-.nf
+
+```
 pex -g /usr/local/opt/postgresql@10 install postgis
-.fi
-.RE
-.PP
+```
 
 And you can solve lots of compilation errors with the tricks from https://gist.github.com/skissane/0487c097872a7f6d0dcc9bcd120c2ccd
-
-.SH AUTHOR
-Paul Jungwirth
-.SH COPYRIGHT
-Copyright \(co 2015 Paul Jungwirth
-
