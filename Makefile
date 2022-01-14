@@ -18,7 +18,7 @@ all: $(MANPAGES)
 %.pandoc: %.md Makefile
 	echo "% $*(pj)" > $@
 	echo "% Paul A. Jungwirth" >> $@
-	echo "% `git log --pretty=format:%as $*.md`" >> $@
+	echo "% `git log --pretty=format:%as $*.md | head -1`" >> $@
 	cat $< >> $@
 
 install:
