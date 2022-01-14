@@ -1,3 +1,29 @@
+# psql tricks
+
+To write out the last query as a CSV file:
+
+```
+\g (format=csv) foo.csv
+```
+
+To show the last query in extended mode (without changing the setting):
+
+```
+\gx
+```
+
+To run a query that generates SQL, then run that SQL:
+
+```
+-- Index every column in the table:
+SELECT format('CREATE INDEX ON table (%I)', i)
+FROM pg_attribute
+WHERE attrelid = 'products'::regclass
+AND attnum > 0
+ORDER BY attnum
+\gexec
+```
+
 # DATABASE ADMINISTRATION
 
 Find the worst tables for full table scans:
