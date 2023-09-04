@@ -37,13 +37,6 @@ exec sp_databases
 go
 ```
 
-## Show tables:
-
-```
-SELECT * FROM SYSOBJECTS WHERE xtype = 'U';
-GO
-```
-
 ## Show schemas:
 
 ```
@@ -51,6 +44,29 @@ SELECT  s.name AS schema_name,
         s.schema_id,
 FROM    sys.schemas s
 ORDER BY s.name;
+GO
+```
+
+## Show tables:
+
+```
+SELECT * FROM SYSOBJECTS WHERE xtype = 'U';
+GO
+```
+
+## Show columns:
+
+```
+SELECT column_name FROM information_schema.columns WHERE table_name = 'foo';
+GO
+```
+
+or better:
+
+```
+:setvar SQLCMDMAXVARTYPEWIDTH 10
+:setvar SQLCMDMAXFIXEDTYPEWIDTH 30
+select column_name, data_type, is_nullable, character_maximum_length from information_schema.columns where table_name = 'Sales' order by ordinal_position;
 GO
 ```
 

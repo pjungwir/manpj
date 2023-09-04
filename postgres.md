@@ -83,6 +83,16 @@ WHERE nspname NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_relation_size(C.oid) DESC
 ```
 
+Find tables with lots of dead tuples:
+
+```
+SELECT  relname, n_live_tup, n_dead_tup,
+        last_vacuum, last_autovacuum, last_analyze, last_autoanalyze,
+        vacuum_count, autovacuum_count, analyze_count, autoanalyze_count
+FROM    pg_stat_all_tables
+ORDER BY n_dead_tup DESC LIMIT 20;
+```
+
 # QUERIES
 
 `regexp_matches(string, pattern)`
@@ -364,3 +374,7 @@ pex -g /usr/local/opt/postgresql@10 install postgis
 ```
 
 And you can solve lots of compilation errors with the tricks from https://gist.github.com/skissane/0487c097872a7f6d0dcc9bcd120c2ccd
+
+# UBUNTU
+
+Use `PGCLUSTER` to select which postgres you want. E.g. `PGCLUSTER=12/main pg_dump ...`. Personally I like to hack my `pg_config` too so I can easily build & install extensions against old versions for Postgres: https://stackoverflow.com/a/43403193/122087

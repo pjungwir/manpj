@@ -1,6 +1,8 @@
 
 # Brace Expansion Tricks
 
+- `${variable:-default}`:
+  Returns `${variable}` if set, otherwise `default`.
 - `${variable#pattern}`:
   Returns `${variable}` with the shortest possible match of *pattern* cut off the front.
 - `${variable##pattern}`:
@@ -36,9 +38,13 @@ a
   Delete to the start of the line.
 
 # Login
-`~/.bash_profile` is executed whenever a user logs in (or, on a Mac, whenever a new Terminal window is opened). `~/.bashrc` is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if `$BASH_ENV` is set, a non-interactive shell will assume it specifies a file to run.
+`~/.bash_profile` is executed whenever a user logs in, but not when you open a terminal. (But the Mac Terminal app *does* run it then, and probably on Ubuntu too if you clicked that Preferences setting.). `~/.bashrc` is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if `$BASH_ENV` is set, a non-interactive shell will assume it specifies a file to run.
 
 Therefore you should set variables in `~/.bashrc`, if you expect to have them in, e.g., cron. But if you set `PATH` recursively, e.g. `PATH="$PATH:$HOME/bin"`, then it will get longer and longer. I'm not sure what to do about this conflict.
+
+On Ubuntu, `~/.bash_profile` includes a line to also source `~/.profile`. And `~/.profile` includes a line to source `~/.bashrc`! So they are all going to get run every time.
+
+Tmux by default starts a new login shell. So it will also source `~/.bash_profile`.
 
 # Variables
 
