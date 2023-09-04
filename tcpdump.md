@@ -55,3 +55,9 @@ Here's a full example:
 ```
 tcpdump -s 0 -xX -w http -w - 'host hendrix && port 910'
 ```
+
+A nice way to capture dns requests:
+
+```
+tcpdump -i enp10s0 -s 350 -C 100 -nn dst port 53
+```

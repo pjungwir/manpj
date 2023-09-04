@@ -18,7 +18,7 @@ all: $(MANPAGES)
 %.pandoc: %.md Makefile
 	echo "% $*(pj)" > $@
 	echo "% Paul A. Jungwirth" >> $@
-	echo "% `git log --pretty=format:%as $*.md`" >> $@
+	echo "% `git log --pretty=format:%as $*.md | head -1`" >> $@
 	cat $< >> $@
 
 install:
@@ -42,7 +42,11 @@ html: all
 toc: html
 	index=build/index.html; \
 	echo '<ul>' > $$index; \
-	for f in `cd build && ls *.html *.txt`; do \
+	globs='*.html'; \
+	if find build -name "*.txt" | grep . >/dev/null; then \
+	  globs="*.html *.txt"; \
+	fi; \
+	for f in `cd build && ls $$globs`; do \
 	  if [ ! $$f = $$index ]; then \
 			p=`echo $$f | sed 's/\.\(html\|txt\)//'`; \
 			echo "<li><a href='$$f'>$$p</a></li>" >> $$index; \
