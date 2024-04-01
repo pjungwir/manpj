@@ -7,3 +7,6 @@ Use these commands to read from and write to the clipboard:
   - pbcopy
 
 Cmd-Opt-r - recovery
+
+
+Also see `man pj brew`.

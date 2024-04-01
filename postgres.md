@@ -370,7 +370,7 @@ On a Mac using Peter Eisentraut's Postgres formulae, use pex to install extensio
 
 
 ```
-pex -g /usr/local/opt/postgresql@10 install postgis
+pex -g /opt/homebrew/Cellar/postgresql@14/14.9/bin/pg_config install postgis
 ```
 
 And you can solve lots of compilation errors with the tricks from https://gist.github.com/skissane/0487c097872a7f6d0dcc9bcd120c2ccd
