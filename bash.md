@@ -105,3 +105,11 @@ These are loaded from `/etc/inputrc` and `~/.inputrc`. Use this get to Ctrl-Arro
 The funny codes might be different depending on your terminal. You can you Ctrl-V then Ctrl-Arrow the see the actual code. ("\\e" and "^[" are equivalent; both indicate the escape key.)
 .PP
 You can also you `bind -p` to see the list of possible key bindings.
+
+# Process Substitution
+
+Takes stdin or stdout of another command and treat it like a file. For example:
+
+```
+diff -u <(git blame HEAD foo/bar) <(git blame foo/bar)
+```

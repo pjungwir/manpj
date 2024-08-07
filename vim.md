@@ -4,3 +4,6 @@
 
 # Quickfix Window:
 
+# ctags
+
+  ctags -R
