@@ -10,6 +10,13 @@ Test configuration:
 sudo -u munin /usr/share/munin/munin-update --debug
 ```
 
+Test a specific plugin:
+
+```
+sudo munin-run df config
+sudo munin-run df
+```
+
 Send a notification:
 
 ```

@@ -96,6 +96,12 @@ To reset your checkout to origin:
 git fetch origin && git reset --hard origin/valid-time # whatever branch you want to copy from
 ```
 
+To un-stage a change without changing your working copy:
+
+```
+git rm --cached filename
+```
+
 
 # Security
 

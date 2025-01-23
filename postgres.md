@@ -24,6 +24,15 @@ ORDER BY attnum
 \gexec
 ```
 
+To get an xml column, without extra stuff:
+
+```
+\pset tuples_only
+\pset format unaligned
+\o /tmp/foo.xml
+select foo from bar;
+```
+
 # DATABASE ADMINISTRATION
 
 Find the worst tables for full table scans:
