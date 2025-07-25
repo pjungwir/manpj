@@ -38,13 +38,38 @@ a
   Delete to the start of the line.
 
 # Login
-`~/.bash_profile` is executed whenever a user logs in, but not when you open a terminal. (But the Mac Terminal app *does* run it then, and probably on Ubuntu too if you clicked that Preferences setting.). `~/.bashrc` is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if `$BASH_ENV` is set, a non-interactive shell will assume it specifies a file to run.
+
+`~/.bash_profile` is executed whenever a user logs in, but not when you open a terminal. (But the Mac Terminal app *does* run it then, and on Debian/Ubuntu too if you clicked that Preferences setting.). `~/.bashrc` is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if `$BASH_ENV` is set, a non-interactive shell will assume it specifies a file to run.
 
 Therefore you should set variables in `~/.bashrc`, if you expect to have them in, e.g., cron. But if you set `PATH` recursively, e.g. `PATH="$PATH:$HOME/bin"`, then it will get longer and longer. I'm not sure what to do about this conflict.
 
-On Ubuntu, `~/.bash_profile` includes a line to also source `~/.profile`. And `~/.profile` includes a line to source `~/.bashrc`! So they are all going to get run every time.
+On Debian/Ubuntu, `~/.bash_profile` includes a line to also source `~/.profile`. And `~/.profile` includes a line to source `~/.bashrc`! So they are all going to get run for every login shell.
 
 Tmux by default starts a new login shell. So it will also source `~/.bash_profile`.
+
+Ssh is normally an interactive login shell. But if you run a command through ssh, then weirdly `.profile` doesn't run (so not a login shell?) and `.bashrc` *does*. Why does `.bashrc` run? Not because it's an interactive shell, but because of a bash special-case for rsh and ssh, according to the bash manpage. If you do `ssh example 'echo $-'` then you see `hBc`: not interactive. And on Debian/Ubuntu, there is a `case` statement at the top of your `bashrc` to quit immediately if the shell isn't interactive. (I was wondering why that was even necessary!) So a non-interactive ssh will effectively not execute your `.bashrc` after all.
+
+Cron doesn't run anything.
+
+                  | qualities          | runs
+----------------- | ------------------ | ----
+console           | login, interactive | .profile (thus .bashrc)
+xfce login        | no bash yet!       |
+xfce4-terminal    | interactive        | .bashrc
+Terminal.app      | login, interactive | .profile (thus .bashrc)
+tmux              | login, interactive | .profile (thus .bashrc)
+tmux (nondefault) | interactive        | .bashrc
+ssh               | login, interactive | .profile (thus .bashrc)
+ssh cmd           |                    | .bashrc
+cron              |                    |
+
+I think it makes sense to have xfce4-terminal run a login shell, and have tmux *not* run a login shell.
+Then you always source `~/.profile` once, whether you launched a terminal or sshed,
+and tmux doesn't run things twice.
+
+Also maybe the Ubuntu practice of sourcing `.bashrc` from `.profile` is okay, so that everything there runs every time.
+
+So where do I set my `PATH`? If I put it in `.bashrc` it will get set twice when I run tmux. Maybe it would be nice to have a full `PATH` for non-interactive ssh, but I guess I've never really missed it before. So I'll set `PATH` in `.profile`.
 
 # Variables
 

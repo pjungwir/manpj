@@ -12,9 +12,16 @@ kubectl get secret the-secret-name -o jsonpath='{.data.foo}' | base64 --decode
 
 kubectl get pods -l app=foo
 
-# Useful image for debugging problems:
+# Debugging pods:
+
+This is a useful image for debugging problems:
 
 k debug mypod -it --image=nicolaka/netshoot
+
+If you want to see the same disk contents (image+volumes),
+make a copy of the pod with a different entrypoint command:
+
+k debug mypod -it --copy-to=debug -c thecontainer -- bash
 
 # For k3s
 

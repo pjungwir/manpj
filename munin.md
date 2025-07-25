@@ -20,8 +20,10 @@ sudo munin-run df
 Send a notification:
 
 ```
-sudo -u munin /usr/share/munin/munin-limits --contact pj@illuminatedcomputing.com --force
+sudo -u munin /usr/share/munin/munin-limits --contact pjungwir --force
 ```
+
+Note that the `--contact` argument must match the contact in your `munin.conf`, in this case `contact.pjungwir.command`.
 
 Set up in /etc/munin/munin-conf.d/alerts:
 

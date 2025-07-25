@@ -37,4 +37,8 @@ If you login remotely, you need to say this:
 
 If you too much ssh keys in your ssh agent:
 
+    ssh -o IdentitiesOnly=yes -i ~/.ssh/the-right-key root@host
+
+To just use a password:
+
     ssh -o PubkeyAuthentication=no root@host

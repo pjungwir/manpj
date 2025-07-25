@@ -33,6 +33,26 @@ To get an xml column, without extra stuff:
 select foo from bar;
 ```
 
+To get more details about the last error:
+
+```
+=> select 'foo'::float;
+ERROR:  invalid input syntax for type double precision: "foo"
+LINE 1: select 'foo'::float;
+               ^
+=> \errverbose
+ERROR:  22P02: invalid input syntax for type double precision: "foo"
+LINE 1: select 'foo'::float;
+               ^
+LOCATION:  float8in_internal_opt_error, float.c:488
+```
+
+You can also do this to get it all the time:
+
+```
+\set VERBOSITY verbose
+```
+
 # DATABASE ADMINISTRATION
 
 Find the worst tables for full table scans:
@@ -372,6 +392,10 @@ WHERE   table_name = 'foo'
 ```
 
 This is an interesting summary also: https://www.postgresql.org/message-id/20120703014228.11c82a45%40james.intern
+
+# PLPGSQL
+
+See above "psql tricks" to get error codes.
 
 # POSTGIS
 
