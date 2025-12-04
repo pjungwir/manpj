@@ -39,7 +39,22 @@ a
 
 # Login
 
-`~/.bash_profile` is executed whenever a user logs in, but not when you open a terminal. (But the Mac Terminal app *does* run it then, and on Debian/Ubuntu too if you clicked that Preferences setting.). `~/.bashrc` is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if `$BASH_ENV` is set, a non-interactive shell will assume it specifies a file to run.
+Bash shells can be "interactive" or not, and they can be "login" or not.
+Start an interactive shell with `-i`.
+Start a login shell with `-l`.
+This tells you whether you're interactive:
+
+```
+[[ $- == *i* ]] && echo Interactive || echo Non-interactive
+```
+
+This tell you whether you're login:
+
+```
+shopt -q login_shell && echo 'Login shell' || echo 'Non-login shell'
+```
+
+`~/.bash_profile` is executed for interactive login shells. This might not include when you open a terminal. The Mac Terminal app *does* run it then. Linux does not, but the Debian/Ubuntu Terminal app has a preference you can click to change that. `~/.bashrc` is executed every time you start a non-login shell, as long as it is interactive. For non-interactive shells, neither file is executed. But if `$BASH_ENV` is set, a non-interactive shell will assume it specifies a file to run.
 
 Therefore you should set variables in `~/.bashrc`, if you expect to have them in, e.g., cron. But if you set `PATH` recursively, e.g. `PATH="$PATH:$HOME/bin"`, then it will get longer and longer. I'm not sure what to do about this conflict.
 
