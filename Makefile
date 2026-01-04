@@ -29,7 +29,7 @@ html: all
 	mkdir -p build
 	for f in *.pj; do \
 		m=`basename $$f .pj`; \
-		man2html $$f | tail -n +3 > build/$$m.html; \
+		./man2html.sh $$f > build/$$m.html; \
 		RESULT=`grep "Invalid Man Page" build/$$m.html`; \
 		if [ -n "$$RESULT" ]; then \
 			rm build/$$m.html; \
