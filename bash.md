@@ -29,13 +29,22 @@ a
 # Command Editing
 
 - Ctrl+w:
-  Delete backwards to the beginning of the word.
+  Cut backwards to the beginning of the word.
 
 - Ctrl+k:
-  Delete to the end of the line.
+  Cut to the end of the line.
 
 - Ctrl+u:
-  Delete to the start of the line.
+  Cut to the start of the line.
+
+- Ctrl+y:
+  Yank (paste) what you last cut.
+
+- Ctrl+x Ctrl+e:
+  Edit your current line in $EDITOR then run it.
+
+- fc:
+  Edit your last-run command in $EDITOR then run it.
 
 # Login
 
