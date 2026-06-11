@@ -21,6 +21,12 @@ git log 'master@{3 days ago}' master -- path/to/file
 
 # Old history
 
+To search all commits (not just the current branch) for a file:
+
+```
+git log --all --full-history --oneline -- path/to/file
+```
+
 To see an old version of something:
 
 ```
