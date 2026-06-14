@@ -61,8 +61,8 @@ initex latex.ltx
 
 Word Count:
 
-It is very hard to get a word count for a latex document. See here:
-http://www.macosxhints.com/article.php?story=20040606044542980&query=pbpaste
+It is very hard to get a word count for a latex document.
+See [this article from machints](https://web.archive.org/web/20140911144915/http://hints.macworld.com/article.php?story=20040606044542980).
 
 The `detex x.tex | wc -w ` approach is known to produce invalid results.
 
