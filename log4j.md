@@ -13,7 +13,7 @@ Log4j Overview
 
 What follows is a whirlwind tour. If you know nothing about log4j, read this short introduction first:
 
-http://logging.apache.org/log4j/docs/manual.html
+https://web.archive.org/web/20050203010811/https://logging.apache.org/log4j/docs/manual.html
 
 So log4j has Loggers, Appenders, and Patterns. Loggers were historically also called Categories. All log methods are called off a Logger. You get your Logger like this:
 

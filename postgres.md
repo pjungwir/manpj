@@ -358,7 +358,7 @@ The name after the slash is who granted the privileges.
 
 To see the permissions on a given table: `\z table_name`. Or `\dp` for all tables/views/sequences.
 
-The letters mean (https://www.postgresql.org/docs/9.5/static/sql-grant.html):
+The letters mean (https://www.postgresql.org/docs/current/sql-grant.html):
 
 - a: insert (add)
 
